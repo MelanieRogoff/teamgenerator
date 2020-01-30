@@ -1,6 +1,6 @@
 const inquirer = require('inquirer');
 
-const questions = ["Welcome! Let's build your engineering team. To begin, please answer the following: What is your name?", "What is your email?", "What is your ID?", "Please indicate if you are an intern, manager, or engineer"];
+const questions = ["Welcome! Let's build your engineering team. To begin, please answer the following: What is your name?", "What is your email?", "What is your ID?", "Please indicate if you are an intern, manager, or engineer", "What school do you go to?"];
 
 inquirer
   .prompt([
@@ -9,7 +9,7 @@ inquirer
       message: questions[3],
       name: "title",
       choices: [
-        "intern", //this references colors from  generateHTML.js
+        "intern",
         "manager",
         "engineer",
       ]
@@ -25,7 +25,7 @@ inquirer
         name: "email"
     },
     {
-        type: "input",
+        type: "number",
         message: questions[2],
         name: "id"
     },
@@ -51,4 +51,5 @@ inquirer
       } else {
           console.log("Your ID is " + answers.id + ".");
       }
-    });
+
+  });
