@@ -51,5 +51,4 @@ inquirer
       } else {
           console.log("Your ID is " + answers.id + ".");
       }
-
   });
