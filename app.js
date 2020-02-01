@@ -1,7 +1,6 @@
 const inquirer = require('inquirer');
 
 const questions = ["Welcome! Let's build your engineering team. To begin, please answer the following: What is your name?", "What is your email?", "What is your ID?", "Please indicate if you are an intern, manager, or engineer", "What school do you go to?"];
-
 inquirer
   .prompt([
     {
@@ -31,7 +30,7 @@ inquirer
     },
   ])
   .then(answers => {
-        if (answers.title == '') {
+      if (answers.title == '') {
       console.log("Are you an engineer, intern, or manager? Please choose again.");
       } else {
       console.log("You indicated that your title is " + answers.title + "!");
@@ -52,3 +51,4 @@ inquirer
           console.log("Your ID is " + answers.id + ".");
       }
   });
+
