@@ -1,10 +1,9 @@
 // const Engineer = require("../lib/engineerclass");
 // const answers = require('../app');
-// const github = require('../app');
 
 // test("Can set GitHUb account via constructor", () => {
 //   const testValue = `${answers.github}`;
-//   const e = new Engineer("Foo", 1, `${answers.email}`, testValue);
+//   const e = new Engineer(`${answers.github}`, 1, `${answers.email}`, testValue);
 //   expect(e.github).toBe(`${answers.github}`);
 // });
 
@@ -16,6 +15,6 @@
 
 // test("Can get GitHub username via getGithub()", () => {
 //   const testValue = `${answers.github}`;
-//   const e = new Engineer("Foo", 1, "test@test.com", testValue);
-//   expect(e.getGithub()).toBe(`${answers.github}`);
+//   const e = new Engineer(`${answers.github}`, 1, "test@test.com", testValue);
+//   expect(e.getGithub()).toBe(testValue);
 // });
