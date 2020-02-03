@@ -48,7 +48,7 @@ inquirer
       .then(answers => {
         const github = answers.github;    
         console.log(github);
-      })
+      });
 
       //IF INTERN, ASK FOR SCHOOL
 
@@ -63,10 +63,9 @@ inquirer
       .then(answers => {
         const school = answers.school;    
         console.log(school);
-      })
+      });
 
    //IF MANAGER, ASK FOR OFFICE #
-
       if (answers.title == 'manager') {
         inquirer.prompt([
         { 
@@ -101,5 +100,5 @@ inquirer
       module.exports = github;
 
     }
-  }}})
+  }}});
 

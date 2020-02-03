@@ -9,12 +9,12 @@ test("Can set school via constructor", () => {
 
 test("getRole() should return \"Intern\"", () => {
   const testValue = "Intern";
-  const e = new Intern("Intern", 1, "test@test.com", `${answers.school}`);
+  const e = new Intern(`${answers.school}`, "Name", "1", `${answers.title}`);
   expect(e.getRole()).toBe(testValue);
 });
 
 test("Can get school via getSchool()", () => {
   const testValue = `${answers.school}`;
-  const e = new Intern("Foo", 1, "test@test.com", testValue);
+  const e = new Intern("Foo", 1, "test@test.com", `${answers.school}`);
   expect(e.getSchool()).toBe(`${answers.school}`);
 });
