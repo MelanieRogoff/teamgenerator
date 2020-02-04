@@ -36,12 +36,6 @@ inquirer
     },
   ])
   .then(answers => {
-      if (answers.title == '') {
-      console.log("Are you an engineer, intern, or manager? Please choose again.");
-      } else {
-      console.log("You indicated that your title is " + answers.title + "!");
-      }
-
     //NESTED INQUIRER - IF ENGINEER ASK FOR GITHUB
       if (answers.title == 'engineer') {
         inquirer.prompt([
@@ -55,9 +49,8 @@ inquirer
         const github = answers.github;    
         console.log(github);
       });
-
-      //IF INTERN, ASK FOR SCHOOL
-
+    }
+    //IF INTERN, ASK FOR SCHOOL
   if (answers.title == 'intern') {
         inquirer.prompt([
       { 
@@ -70,7 +63,7 @@ inquirer
         const school = answers.school;    
         console.log(school);
       });
-
+    }
    //IF MANAGER, ASK FOR OFFICE #
       if (answers.title == 'manager') {
         inquirer.prompt([
@@ -84,36 +77,41 @@ inquirer
         const officeNumber = answers.number;    
         console.log(officeNumber);
       })
-
-      //REGULAR IF STATEMENT CHECKS
-      if (answers.name == '') {
-        console.log("What is your first name?");
-      } else {
-      console.log("Welcome, " + answers.name + "!")
-      }
-
-      if (answers.email == '') {
-          console.log("You don't have an email? Please try again.");
-      } else {
-          console.log("Your email is " + answers.email + ".");
-      }
-
-      if (answers.id == '') {
-          console.log("Please enter your ID.");
-      } else {
-          console.log("Your ID is " + answers.id + ".");
-      }
-      module.exports = github;
+      .catch(error => {
+        console.log(error)
+      })
     }
+  //REGULAR IF STATEMENT CHECKS
+      // if (answers.title == '') {
+      //   console.log("Are you an engineer, intern, or manager? Please choose again.");
+      //   } else {
+      //   console.log("You indicated that your title is " + answers.title + "!");
+      //   }
+      // if (answers.name == '') {
+      //   console.log("What is your first name?");
+      // } else {
+      // console.log("Welcome, " + answers.name + "!")
+      // }
+
+      // if (answers.email == '') {
+      //     console.log("You don't have an email? Please try again.");
+      // } else {
+      //     console.log("Your email is " + answers.email + ".");
+      // }
+
+      // if (answers.id == '') {
+      //     console.log("Please enter your ID.");
+      // } else {
+      //     console.log("Your ID is " + answers.id + ".");
+      // }
     
+
     pdf.create(generateHTML(answers)).toFile('./team.pdf', function(err) { 
          if (err) return console.log(err);
          (async () => { 
-           await open('.team.pdf');
+           await open('./team.pdf');
          })()
         })             
        .catch(error => {
          console.log(error)
-       })
-      }
-      }});
+       })})
