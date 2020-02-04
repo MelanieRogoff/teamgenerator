@@ -1,6 +1,12 @@
 const inquirer = require('inquirer');
 
-const questions = ["Welcome! Let's build your engineering team. To begin, please answer the following: What is your name?", "What is your email?", "What is your ID?", "Please indicate if you are an intern, manager, or engineer", "What school do you go to?"];
+const open = require('open');
+
+const pdf = require('html-pdf');
+
+const generateHTML = require("./lib/generateHTML"); 
+
+const questions = ["Welcome! Let's build your team. To begin, please answer the following: What is your first name?", "What is your email?", "What is your ID?", "Are you an intern, manager, or engineer?"];
 inquirer
   .prompt([
     {
@@ -81,7 +87,7 @@ inquirer
 
       //REGULAR IF STATEMENT CHECKS
       if (answers.name == '') {
-        console.log("What is your name?");
+        console.log("What is your first name?");
       } else {
       console.log("Welcome, " + answers.name + "!")
       }
@@ -98,7 +104,16 @@ inquirer
           console.log("Your ID is " + answers.id + ".");
       }
       module.exports = github;
-
     }
-  }}});
-
+    
+    pdf.create(generateHTML(answers)).toFile('./team.pdf', function(err) { 
+         if (err) return console.log(err);
+         (async () => { 
+           await open('.team.pdf');
+         })()
+        })             
+       .catch(error => {
+         console.log(error)
+       })
+      }
+      }});
