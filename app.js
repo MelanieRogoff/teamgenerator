@@ -1,5 +1,7 @@
 const inquirer = require('inquirer');
 
+const Engineer = require("./lib/engineerclass");
+
 const open = require('open');
 
 const pdf = require('html-pdf');
@@ -8,7 +10,6 @@ const generateHTML = require("./lib/generateHTML");
 
 const questions = ["Welcome! Let's build your team. To begin, please answer the following: What is your first name?", "What is your email?", "What is your ID?", "Are you an intern, manager, or engineer?"];
 
-let teamArray = [];
 
 function initialPrompt() {
 inquirer
@@ -16,11 +17,7 @@ inquirer
             type: "checkbox",
             message: questions[3],
             name: "title",
-            choices: [
-                "intern",
-                "manager",
-                "engineer",
-            ]
+            choices: ["intern", "manager", "engineer"]
         },
         {
             type: "input",
@@ -61,7 +58,8 @@ inquirer
                 }, ])
                 .then(answers => {
                     const github = answers.github;
-                    console.log(github);
+                    engineer = new Engineer(answers.name, this.id, this.email, this.github)
+                    console.log(engineer);
                     //push to teamArray
                     addUser();
                 })
