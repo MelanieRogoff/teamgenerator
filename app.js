@@ -48,7 +48,6 @@ inquirer
             console.log("Your email is " + answers.email + ", and your ID is " + answers.id + ".");
         }
 
-
         //NESTED INQUIRER - IF ENGINEER ASK FOR GITHUB
         if (answers.title == 'engineer') {
             inquirer.prompt([{
