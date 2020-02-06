@@ -46,6 +46,11 @@ inquirer
         },
     ])
     .then(answers => {
+              //REGULAR IF STATEMENT CHECKS
+              if (answers.title == '' || answers.name == '' || answers.email == '' || answers.id == '' || answers.school == '' || answers.github == '' || answers.number == '') {
+                console.log("Please enter a value and start again.");
+            } 
+
         const employeeDetails = answers;
         //INTERN CHECK
         if (employeeDetails.title == 'Intern') {
@@ -86,17 +91,15 @@ inquirer
         ])
             .then(answers => {
                 manager = new Manager(employeeDetails.name, employeeDetails.id, employeeDetails.email, answers.number);
-                teamArray.push(manager);//push to teamArray -- ONLY pushing if duplicateCheck is false
-                addUser();
+                teamArray.push(manager);// ONLY pushing if duplicateCheck is false
+                addUser();  
             })
-            
-        }
        
         //RIGHT NOW, MANAGER CAN STILL DUPLICATE. 
 
 
 
-    })};
+    }})};
     
         
             const addUser = () => {
