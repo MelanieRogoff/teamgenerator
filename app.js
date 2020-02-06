@@ -14,7 +14,7 @@ const pdf = require('html-pdf');
 
 const generateHTML = require("./lib/generateHTML");
 
-let duplicateCheck = true;  //flagging this variable in order to check if there's a duplicate Manager.
+let duplicateCheck = false;  //flagging this variable in order to check if there's a duplicate Manager.
 
 let teamArray = [];
 
@@ -47,42 +47,65 @@ inquirer
     ])
     .then(answers => {
         const employeeDetails = answers;
-        //REGULAR IF STATEMENT CHECKS
-        if (answers.title == '' || answers.name == '') {
-            console.log("Please state your name and if you are an intern, engineer, or manager.");
-        } else {
-            console.log("Welcome, " + answers.name + "! Your title is " + answers.title + ".");
-        }
-        if (answers.email == '' || answers.id == '') {
-            console.log("Your email and/or ID input cannot be empty. Please try again.");
-        } else {
-            console.log("Your email is " + answers.email + ", and your ID is " + answers.id + ".");
-        }
-
-        if (employeeDetails.title === 'Engineer') {
-            addEngineer();
-        } 
-
-        if (employeeDetails.title === 'Intern') {
-            addIntern();
-        } 
-        
-        if (employeeDetails.title === 'Manager' && !duplicateCheck) {
-            addManager();
-         } else {
-            console.log("You can only have one manager per team.");
+        //INTERN CHECK
+        if (employeeDetails.title == 'Intern') {
+            inquirer.prompt([{
+                type: "input",
+                message: "What school do you go to?",
+                name: "school"
+                },
+            ])
+        .then(answers => {
+          intern = new Intern(employeeDetails.name, employeeDetails.id, employeeDetails.email, answers.school);
+          teamArray.push(intern);//push to teamArray
+          addUser();
+        })
+    };
+    //ENGINEER CHECK
+    if (employeeDetails.title == 'Engineer') {
+        inquirer.prompt([{
+            type: "input",
+            message: "What is your GitHub username?",
+            name: "github"
+        }, 
+        ])
+        .then(answers => {
+            engineer = new Engineer(employeeDetails.name, employeeDetails.id, employeeDetails.email, answers.github);
+            teamArray.push(engineer)//push to teamArray
             addUser();
+        })
+    }
+
+    //MANAGER CHECK + DUPLICATE CHECK
+        if (employeeDetails.title === 'Manager' && !duplicateCheck) {
+            inquirer.prompt([{
+                type: "number",
+                message: "What is your office number?",
+                name: "number"
+            }, 
+        ])
+            .then(answers => {
+                duplicateCheck = true;
+                manager = new Manager(employeeDetails.name, employeeDetails.id, employeeDetails.email, answers.number);
+                teamArray.push(manager);//push to teamArray -- ONLY pushing if duplicateCheck is false
+                addUser();
+            })
         }
-        
-        
+        //RIGHT NOW, EVERYTHING WORKS EXCEPT I DO NOT GET THE OFFICE NUMBER, AND MANAGER CAN STILL DUPLICATE. 
+
+
+
+    })};
+    
         
             const addUser = () => {
                 inquirer.prompt([{
-                        "type": "confirm",
-                        "message": "Would you like to add another user?",
-                        "name": "addUser"
-                    }])
-                    .then(answers => {
+                    "type": "confirm",
+                    "message": "Would you like to add another user?",
+                    "name": "addUser"
+                    },
+                ])
+                .then(answers => {
                         if (answers.addUser) {
                             initialPrompt();
                         } else {
@@ -92,51 +115,12 @@ inquirer
                                     await open('./output_htmls/team.pdf');
                                 })
                             })
-                        }})};
-          initialPrompt();
+                        }})
 
 
 
 
-
-          function addEngineer() {
-                //NESTED INQUIRER - IF ENGINEER ASK FOR GITHUB
-            inquirer.prompt([{
-                    type: "input",
-                    message: "What is your GitHub username?",
-                    name: "github"
-                }, ])
-                .then(answers => {
-                    engineer = new Engineer(employeeDetails.name, employeeDetails.id, employeeDetails.email, answers.github);
-                    teamArray.push(engineer)//push to teamArray
-                    addUser();
-                })
-        };
-          
-          function addIntern() {
-              //IF INTERN, ASK FOR SCHOOL
-        if (employeeDetails.title === 'Intern') {
-            inquirer.prompt([{
-                    type: "input",
-                    message: "What school do you go to?",
-                    name: "school"
-                }, ])
-                .then(answers => {
-                    intern = new Intern(employeeDetails.name, employeeDetails.id, employeeDetails.email, answers.school);
-                    teamArray.push(intern);//push to teamArray
-                    addUser();
-                })
-        };
-          }
-
-          function addManager() {
-            inquirer.prompt([{
-                    type: "number",
-                    message: "What is your office number?",
-                    name: "number"
-                }, ])
-                .then(answers => {
-                    manager = new Manager(employeeDetails.name, employeeDetails.id, employeeDetails.email, answers.number);
-                    teamArray.push(manager);//push to teamArray -- ONLY pushing if duplicateCheck is false
-                    addUser();
-                })}})}
+                    }
+        
+        initialPrompt();
+    
