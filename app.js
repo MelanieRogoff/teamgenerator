@@ -77,7 +77,7 @@ inquirer
     }
 
     //MANAGER CHECK + DUPLICATE CHECK
-        if (employeeDetails.title === 'Manager' && !duplicateCheck) {
+        if (employeeDetails.title == 'Manager' && !duplicateCheck) {
             inquirer.prompt([{
                 type: "number",
                 message: "What is your office number?",
@@ -85,13 +85,14 @@ inquirer
             }, 
         ])
             .then(answers => {
-                duplicateCheck = true;
                 manager = new Manager(employeeDetails.name, employeeDetails.id, employeeDetails.email, answers.number);
                 teamArray.push(manager);//push to teamArray -- ONLY pushing if duplicateCheck is false
                 addUser();
             })
+            
         }
-        //RIGHT NOW, EVERYTHING WORKS EXCEPT I DO NOT GET THE OFFICE NUMBER, AND MANAGER CAN STILL DUPLICATE. 
+       
+        //RIGHT NOW, MANAGER CAN STILL DUPLICATE. 
 
 
 
