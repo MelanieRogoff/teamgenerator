@@ -2,11 +2,21 @@ const inquirer = require('inquirer');
 
 const Engineer = require("./lib/engineerclass");
 
+const Employee = require("./lib/employeeclass");
+
+const Intern = require("./lib/internclass");
+
+const Manager = require("./lib/managerclass");
+
 const open = require('open');
 
 const pdf = require('html-pdf');
 
 const generateHTML = require("./lib/generateHTML");
+
+let duplicateCheck = true;  //flagging this variable in order to check if there's a duplicate Manager.
+
+let teamArray = [];
 
 const questions = ["Welcome! Let's build your team. To begin, please answer the following: What is your first name?", "What is your email?", "What is your ID?", "Are you an intern, manager, or engineer?"];
 
@@ -17,7 +27,7 @@ inquirer
             type: "checkbox",
             message: questions[3],
             name: "title",
-            choices: ["intern", "manager", "engineer"]
+            choices: ["Intern", "Manager", "Engineer"]
         },
         {
             type: "input",
@@ -36,6 +46,7 @@ inquirer
         },
     ])
     .then(answers => {
+        const employeeDetails = answers;
         //REGULAR IF STATEMENT CHECKS
         if (answers.title == '' || answers.name == '') {
             console.log("Please state your name and if you are an intern, engineer, or manager.");
@@ -48,53 +59,23 @@ inquirer
             console.log("Your email is " + answers.email + ", and your ID is " + answers.id + ".");
         }
 
-        //NESTED INQUIRER - IF ENGINEER ASK FOR GITHUB
-        if (answers.title == 'engineer') {
-            inquirer.prompt([{
-                    type: "input",
-                    message: "What is your GitHub username?",
-                    name: "github"
-                }, ])
-                .then(answers => {
-                    const github = answers.github;
-                    engineer = new Engineer(answers.name, this.id, this.email, this.github)
-                    console.log(engineer);
-                    //push to teamArray
-                    addUser();
-                })
+        if (employeeDetails.title === 'Engineer') {
+            addEngineer();
+        } 
+
+        if (employeeDetails.title === 'Intern') {
+            addIntern();
+        } 
+        
+        if (employeeDetails.title === 'Manager' && !duplicateCheck) {
+            addManager();
+         } else {
+            console.log("You can only have one manager per team.");
+            addUser();
         }
-
-
-        //IF INTERN, ASK FOR SCHOOL
-        if (answers.title == 'intern') {
-            inquirer.prompt([{
-                    type: "input",
-                    message: "What school do you go to?",
-                    name: "school"
-                }, ])
-                .then(answers => {
-                    const school = answers.school;
-                    console.log(school);
-                    addUser();
-                })
-
-        }
-
-        //IF MANAGER, ASK FOR OFFICE #
-        if (answers.title == 'manager') {
-            inquirer.prompt([{
-                    type: "number",
-                    message: "What is your office number?",
-                    name: "number"
-                }, ])
-                .then(answers => {
-                    const officeNumber = answers.number;
-                    console.log(officeNumber);
-                    addUser();
-                })
-
-            }})
-        };
+        
+        
+        
             const addUser = () => {
                 inquirer.prompt([{
                         "type": "confirm",
@@ -112,5 +93,50 @@ inquirer
                                 })
                             })
                         }})};
+          initialPrompt();
 
-                        initialPrompt();
+
+
+
+
+          function addEngineer() {
+                //NESTED INQUIRER - IF ENGINEER ASK FOR GITHUB
+            inquirer.prompt([{
+                    type: "input",
+                    message: "What is your GitHub username?",
+                    name: "github"
+                }, ])
+                .then(answers => {
+                    engineer = new Engineer(employeeDetails.name, employeeDetails.id, employeeDetails.email, answers.github);
+                    teamArray.push(engineer)//push to teamArray
+                    addUser();
+                })
+        };
+          
+          function addIntern() {
+              //IF INTERN, ASK FOR SCHOOL
+        if (employeeDetails.title === 'Intern') {
+            inquirer.prompt([{
+                    type: "input",
+                    message: "What school do you go to?",
+                    name: "school"
+                }, ])
+                .then(answers => {
+                    intern = new Intern(employeeDetails.name, employeeDetails.id, employeeDetails.email, answers.school);
+                    teamArray.push(intern);//push to teamArray
+                    addUser();
+                })
+        };
+          }
+
+          function addManager() {
+            inquirer.prompt([{
+                    type: "number",
+                    message: "What is your office number?",
+                    name: "number"
+                }, ])
+                .then(answers => {
+                    manager = new Manager(employeeDetails.name, employeeDetails.id, employeeDetails.email, answers.number);
+                    teamArray.push(manager);//push to teamArray -- ONLY pushing if duplicateCheck is false
+                    addUser();
+                })}})}
