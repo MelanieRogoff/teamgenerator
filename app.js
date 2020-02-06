@@ -10,11 +10,9 @@ const Manager = require("./lib/managerclass");
 
 const open = require('open');
 
-const pdf = require('html-pdf');
+const fs = require("fs");
 
 const generateHTML = require("./lib/generateHTML");
-
-let duplicateCheck = false;  //flagging this variable in order to check if there's a duplicate Manager.
 
 let teamArray = [];
 
@@ -79,19 +77,19 @@ inquirer
                 .then(answers => {
                         if (answers.addUser) {
                             chooser();  //function for adding engineer or intern
-                            //If chooser's result was engineer ...  
-                            //If chooser's result was intern ...
                         } else {
-                            pdf.create(generateHTML(answers)).toFile('./output_htmls/team.pdf', function (err) {
-                                if (err) return console.log(err);
-                                (async () => {
-                                    await open('./output_htmls/team.pdf');
-                                })
-                            })
-                        }})
+                            const creation = generateHTML(answers);
+                            fs.writeFile('./output_htmls/team.html', creation, (err, dt) => {
+                                if (err) {
+                                    throw err;
+                                }
+                                console.log("One Team file, coming right up!!");
+                            });
+                        }})};
+                    
+                
+                
 
-
-                    }
         
         initialPrompt(); //calling initial prompt
     
