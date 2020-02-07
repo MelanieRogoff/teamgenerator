@@ -1,8 +1,4 @@
-const answers = require('../app');
-
-function generateHTML(manager) { 
-    console.log(manager);
-return `<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
    <head>
       <meta charset="UTF-8" />
@@ -26,24 +22,21 @@ return `<!DOCTYPE html>
         .sep2 {
             margin-left: 80px;
         }
-        #coffee {
-            height: 70px;
-            width: 70px;
+        #glasses {
+            height: 60px;
+            width: 60px;
         }
       </style>
       </head>
       <body>  
         <div class="card text-white bg-danger mb-3 dif1">
-            <div class="card-header">${manager.name}</div>
+            <div class="card-header">Melanie</div>
                 <div class="card-body">
-                    <h5 class="card-text"> <img id="coffee" src="../images/coffee.png"> ${manager.title}</h5>
-                    <p class="card-text surround">ID: ${manager.id}</p>
-                    <p class="card-text surround">Email: ${manager.email}</p>
-                    <p class="card-text surround">Office Number: ${manager.number}</p>
+                    <h5 class="card-text"> <img id="glasses" src="../images/glasses.png"> Engineer</h5>
+                    <p class="card-text surround">ID: 4</p>
+                    <p class="card-text surround">Email: melanie@github.com</p>
+                    <p class="card-text surround">GitHub: MelanieRogoff</p>
                 </div>
             </div>          
         </body>
-        </html>`
-    }
-
-    module.exports = generateHTML;
+        </html>
