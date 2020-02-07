@@ -12,9 +12,15 @@ const open = require('open');
 
 const fs = require("fs");
 
+let manager;
+
+let intern;
+
+let engineer;
+
 const generateHTML = require("./lib/generateHTML");
 
-let teamArray = [];
+const teamArray = []; //can push new things into array if it's a const
 
 function initialPrompt() {
 inquirer
@@ -39,58 +45,45 @@ inquirer
             message: "What is your manager's ID number?",
             name: "id"
         },
+        {
+            type: "number",
+            message: "What is your manager's office number?",
+            name: "number"
+        },
     ])
-    .then(answers => {
-        const employeeDetails = answers;
-        if (employeeDetails.title == 'Manager') {
-            inquirer.prompt([{
-                type: "number",
-                message: "What is your manager's office number?",
-                name: "number"
-            }, 
-        ])
-            .then(answers => {
-                let employeeDetails = answers; 
-                manager = new Manager(employeeDetails.name, employeeDetails.id, employeeDetails.email, answers.number);
-                teamArray.push(manager);// ONLY pushing if duplicateCheck is false
-                addUser();  
-            })
-       
+    .then(answers => { 
+           //REGULAR IF STATEMENT CHECKS - PUT BEFORE 
+           if (answers.title == '' || answers.name == '' || answers.email == '' || answers.id == '' || answers.school == '' || answers.github == '' || answers.number == '') {
+            console.log("Please enter a value and start again.");
+        } else {
 
-              //REGULAR IF STATEMENT CHECKS
-              if (answers.title == '' || answers.name == '' || answers.email == '' || answers.id == '' || answers.school == '' || answers.github == '' || answers.number == '') {
-                console.log("Please enter a value and start again.");
-            } 
+            manager = new Manager(answers.name, answers.id, answers.email, answers.number);
+            teamArray.push(manager);// ONLY pushing if duplicateCheck is false
+            addUser();  
+        }})
 
-
-
-    }})};
-    
+    };
         
-            const addUser = () => {
-                inquirer.prompt([{
-                    "type": "confirm",
-                    "message": "Would you like to add another user?",
-                    "name": "addUser"
-                    },
-                ])
-                .then(answers => {
-                        if (answers.addUser) {
-                            chooser();  //function for adding engineer or intern
-                        } else {
-                            const creation = generateHTML(answers);
-                            fs.writeFile('./output_htmls/team.html', creation, (err, dt) => {
-                                if (err) {
-                                    throw err;
-                                }
-                                console.log("One Team file, coming right up!!");
-                            });
-                        }})};
+const addUser = () => {
+   inquirer.prompt([{
+        "type": "confirm",
+        "message": "Would you like to add another user?",
+        "name": "addUser"
+    },
+])
+.then(answers => {
+    if (answers.addUser) {
+        chooser();  //function for adding engineer or intern
+     } else {
+        const creation = generateHTML(answers);
+        fs.writeFile('./output_htmls/team.html', creation, (err, dt) => {
+            if (err) {
+            throw err;
+            }
+        console.log("One Team file, coming right up!!");
+     });
+}})};
                     
-                
-                
-
-        
         initialPrompt(); //calling initial prompt
     
     function chooser() {
@@ -105,11 +98,10 @@ inquirer
             .then (answers => {
                 //IF CHOOSING ENGINEER
                 if (answers.choice == "Engineer") {
-                    let employeeDetails = answers; 
                         inquirer.prompt([{
                             type: "input", 
                             message: "What is the engineer's first name?",
-                            name: "engineerName"
+                            name: "name"
                         },
                         {
                             type: "input",
@@ -128,8 +120,7 @@ inquirer
                         }, 
                     ])
                     .then(answers => {
-                        let employeeDetails = answers;
-                        engineer = new Engineer(employeeDetails.name, employeeDetails.id, employeeDetails.email, answers.github);
+                        engineer = new Engineer(answers.name, answers.id, answers.email, answers.github);
                         teamArray.push(engineer)//push to teamArray
                         addUser();
                     })
@@ -138,7 +129,7 @@ inquirer
                             inquirer.prompt([{
                                 type: "input", 
                                 message: "What is the intern's first name?",
-                                name: "internName"
+                                name: "name"
                             },
                             {
                                 type: "input",
@@ -157,8 +148,7 @@ inquirer
                             }, 
                         ])
                         .then(answers => {
-                            let employeeDetails = answers;
-                            intern = new Intern(employeeDetails.name, employeeDetails.id, employeeDetails.email, answers.github);
+                            intern = new Intern(answers.name, answers.id, answers.email, answers.school);
                             teamArray.push(intern)//push to teamArray
                             addUser();
                         })
